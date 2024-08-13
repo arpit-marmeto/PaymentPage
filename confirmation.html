@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @media (max-width: 768px) {
+            .order-summary-container {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-10">
+    <div class="w-full max-w-5xl bg-white rounded-lg shadow-lg flex flex-col md:flex-row">
+        <!-- Left Side: Order Details -->
+        <div class="w-full md:w-1/2 p-4 md:p-8">
+            <h2 class="text-2xl font-semibold mb-4">Thank you, <span id="customer-name"></span>!</h2>
+            <p class="text-lg text-green-600 mb-4">Your order is confirmed</p>
+            <p class="text-gray-600">You'll receive a confirmation email with your order number shortly.</p>
+            <hr class="my-4">
+            <div>
+                <h3 class="text-xl font-semibold mb-2">Order details</h3>
+                <div class="mb-4">
+                    <p class="font-medium">Contact Information</p>
+                    <p id="contact-email"></p>
+                </div>
+                <div class="mb-4">
+                    <p class="font-medium">Shipping Address</p>
+                    <p id="shipping-address"></p>
+                </div>
+                <div class="mb-4">
+                    <p class="font-medium">Billing Address</p>
+                    <p id="billing-address"></p>
+                </div>
+                <div>
+                    <p class="font-medium">Payment Method</p>
+                    <p>Card ending in **** <span id="last-four-digits"></span> - USD <span id="payment-amount"></span></p>
+                </div>
+            </div>
+            <button class="mt-6 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                Continue Shopping
+            </button>
+        </div>
+        <!-- Right Side: Order Summary -->
+        <div class="w-full md:w-1/2 p-8 bg-gray-200 order-summary-container">
+            <h3 class="text-xl font-semibold mb-4">Order Summary</h3>
+            <div id="order-summary" class="space-y-4">
+                <!-- Rendered by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="confirmation.js"></script>
+</body>
+</html>
