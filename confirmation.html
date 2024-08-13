@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         @media (max-width: 768px) {
@@ -18,32 +19,47 @@
     <div class="w-full max-w-5xl bg-white rounded-lg shadow-lg flex flex-col md:flex-row">
         <!-- Left Side: Order Details -->
         <div class="w-full md:w-1/2 p-4 md:p-8">
-            <h2 class="text-2xl font-semibold mb-4">Thank you, <span id="customer-name"></span>!</h2>
-            <p class="text-lg text-green-600 mb-4">Your order is confirmed</p>
-            <p class="text-gray-600">You'll receive a confirmation email with your order number shortly.</p>
-            <hr class="my-4">
-            <div>
+            <div class="border-2 p-5 rounded-lg">
+                <h2 class="text-2xl font-semibold mb-4">Thank you, <span id="customer-name"></span>!</h2>
+                <p class="text-lg text-green-600 mb-4 flex items-center">
+                    Your order is confirmed! 
+                    <span class="flex items-center justify-center w-6 h-6 bg-white border-2 border-green-600 rounded-full inline-flex ml-2">
+                        <i class="fa-solid fa-check text-green-600 text-xs"></i>
+                    </span>
+                </p>
+                
+                <p class="text-gray-600">You'll receive a confirmation email with your order number shortly.</p>
+            </div>
+            <div class="border-2 p-5 rounded-lg mt-4">
                 <h3 class="text-xl font-semibold mb-2">Order details</h3>
-                <div class="mb-4">
-                    <p class="font-medium">Contact Information</p>
-                    <p id="contact-email"></p>
+                <div class="mb-4 flex">
+                    <div class="mr-12">
+                        <p class="font-medium">Contact Information</p>
+                        <p id="contact-email"></p>
+                        <p id="contact-number"></p>
+                    </div>
+                    <div>
+                        <p class="font-medium">Payment Method</p>
+                        <p>Card ending in **** <span id="last-four-digits"></span> - USD <span id="payment-amount"></span></p>
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <p class="font-medium">Shipping Address</p>
-                    <p id="shipping-address"></p>
-                </div>
-                <div class="mb-4">
-                    <p class="font-medium">Billing Address</p>
-                    <p id="billing-address"></p>
-                </div>
-                <div>
-                    <p class="font-medium">Payment Method</p>
-                    <p>Card ending in **** <span id="last-four-digits"></span> - USD <span id="payment-amount"></span></p>
+                <div class="flex">
+                    <div class="mb-4 mr-8">
+                        <p class="font-medium">Shipping Address</p>
+                        <p id="shipping-address"></p>
+                    </div>
+                    <div class="mb-4">
+                        <p class="font-medium">Billing Address</p>
+                        <p id="billing-address"></p>
+                    </div>
                 </div>
             </div>
-            <button class="mt-6 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
-                Continue Shopping
-            </button>
+            <div class="mt-8 flex justify-between items-center">
+                <h3 class="text-xs">Need Help? <span class="text-red-600">Contact Us</span></h3>
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    Continue Shopping
+                </button>
+            </div>
         </div>
         <!-- Right Side: Order Summary -->
         <div class="w-full md:w-1/2 p-8 bg-gray-200 order-summary-container">

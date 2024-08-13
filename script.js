@@ -196,7 +196,7 @@ function validateCreditCard() {
     const cvv = document.getElementById('cvv').value;
 
     // Validate card number (16 digits)
-    if (!/^\d{16}$/.test(cardNumber)) {
+    if (!/^\d{19}$/.test(cardNumber)) {
         alert('Card number must be exactly 16 digits.');
         return false;
     }
@@ -239,24 +239,47 @@ function togglePaymentMethod(method) {
 document.addEventListener('DOMContentLoaded', () => {
     renderOrderSummary();
     updatePaymentButton();
-});
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    renderOrderSummary();
-    renderCouponSection();
 
     const cardNumberInput = document.getElementById('card-number');
     const expiryDateInput = document.getElementById('expiry-date');
     const cvvInput = document.getElementById('cvv');
     const verifyCouponButton = document.getElementById('verify-coupon');
 
-    cardNumberInput.addEventListener('input', restrictInputToNumbers);
-    expiryDateInput.addEventListener('input', restrictInputToNumbers);
-    cvvInput.addEventListener('input', restrictInputToNumbers);
+    // Function to format card number input
+    cardNumberInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+        value = value.substring(0, 19); // Limit to 16 digits
+        const formattedValue = value.match(/.{1,4}/g)?.join(' ') || '';
+        e.target.value = formattedValue;
+    });
+
+    // Function to format expiry date input
+    expiryDateInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+        if (value.length > 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        e.target.value = value.substring(0, 5); // Limit to MM/YY
+    });
+
+    // Function to limit CVV input to 3 digits
+    cvvInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+        e.target.value = value.substring(0, 3); // Limit to 3 digits
+    });
+
+    // Coupon functionality (example implementation)
+    function verifyCoupon() {
+        const couponCode = document.getElementById('coupon-code').value;
+        const couponMessage = document.getElementById('coupon-message');
+
+        // Example validation logic (replace with real validation)
+        if (couponCode === 'DISCOUNT10') {
+            couponMessage.textContent = 'Coupon code applied!';
+        } else {
+            couponMessage.textContent = 'Invalid coupon code.';
+        }
+    }
 
     verifyCouponButton.addEventListener('click', verifyCoupon);
 });
-
-

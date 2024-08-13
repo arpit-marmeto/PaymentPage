@@ -167,6 +167,7 @@ function renderOrderSummary() {
 function populateDetails() {
     document.getElementById('customer-name').textContent = `${data.customer.first_name} ${data.customer.last_name}`;
     document.getElementById('contact-email').textContent = data.customer.email;
+    document.getElementById('contact-number').textContent = data.customer.phone;
 
     const shippingAddress = data.customer.shipping_address;
     document.getElementById('shipping-address').textContent = `
