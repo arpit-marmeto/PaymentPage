@@ -147,9 +147,9 @@ function renderOrderSummary() {
     const couponSection = document.createElement('div');
     couponSection.className = 'mt-6';
     couponSection.innerHTML = `
-        <div class="flex space-x-4">
+        <div class="flex space-x-1 md:space-x-4">
             <input type="text" id="coupon-code" placeholder="Enter coupon code" class="flex-1 px-2 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-            <button id="verify-coupon" class="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Verify</button>
+            <button id="verify-coupon" class="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">Apply</button>
         </div>
         <p id="coupon-message" class="text-red-500 text-sm mt-2"></p> <!-- For displaying coupon validation messages -->
     `;
@@ -186,39 +186,52 @@ function renderOrderSummary() {
 // Update payment button text
 function updatePaymentButton() {
     const payButton = document.getElementById('pay-button');
-    payButton.textContent = `Pay USD ${data.cart.grand_total.toFixed(2)}`;
+    payButton.textContent = `Pay $ ${data.cart.grand_total.toFixed(2)}`;
 }
 
-// Validate credit card details
-function validateCreditCard() {
-    const cardNumber = document.getElementById('card-number').value.replace(/\s+/g, '');
-    const expiryDate = document.getElementById('expiry-date').value;
-    const cvv = document.getElementById('cvv').value;
+// Validate form
+function validateForm() {
+    const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
 
-    // Validate card number (16 digits)
-    if (!/^\d{19}$/.test(cardNumber)) {
-        alert('Card number must be exactly 16 digits.');
-        return false;
+    if (paymentMethod === 'card') {
+        const cardNumber = document.getElementById('card-number').value.replace(/\s+/g, '');
+        const expiryDate = document.getElementById('expiry-date').value;
+        const cvv = document.getElementById('cvv').value;
+
+        // Validate card number (19 characters including spaces, 16 digits)
+        if (!/^\d{16}$/.test(cardNumber)) {
+            alert('Card number must be exactly 16 digits.');
+            return false;
+        }
+
+        // Validate expiry date (MM/YY format)
+        const expiryDatePattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
+        if (!expiryDatePattern.test(expiryDate)) {
+            alert('Please enter a valid expiration date in MM/YY format.');
+            return false;
+        }
+
+        // Additional expiry date validation
+        const [expMonth, expYear] = expiryDate.split('/').map(Number);
+        const currentDate = new Date();
+        const expDate = new Date(`20${expYear}`, expMonth - 1);
+
+        if (expDate < currentDate || expMonth > 12 || expMonth < 1 || expYear < 0) {
+            alert('Invalid expiry date.');
+            return false;
+        }
+
+        // Validate CVV (exactly 3 numeric digits)
+        if (!/^\d{3}$/.test(cvv)) {
+            alert('CVV must be exactly 3 digits.');
+            return false;
+        }
     }
 
-    // Validate expiry date (MM/YY format)
-    const [expMonth, expYear] = expiryDate.split('/').map(Number);
-    const currentDate = new Date();
-    const expDate = new Date(`20${expYear}`, expMonth - 1);
-
-    if (expDate < currentDate || expMonth > 12 || expMonth < 1 || expYear < 0) {
-        alert('Invalid expiry date.');
-        return false;
-    }
-
-    // Validate CVV (exactly 3 numeric digits)
-    if (!/^\d{3}$/.test(cvv)) {
-        alert('CVV must be exactly 3 digits.');
-        return false;
-    }
-
-    alert('Payment Successful!');
-    return true;
+    // If validation passes, redirect to the confirmation page.
+    // alert('Payment Successful!');
+    window.location.href = 'confirmation.html';
+    return false; // Prevent actual form submission since we're redirecting
 }
 
 // Toggle payment method display
@@ -235,6 +248,7 @@ function togglePaymentMethod(method) {
     }
 }
 
+
 // Initialize page
 document.addEventListener('DOMContentLoaded', () => {
     renderOrderSummary();
@@ -248,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to format card number input
     cardNumberInput.addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
-        value = value.substring(0, 19); // Limit to 16 digits
+        value = value.substring(0, 16); // Limit to 16 digits
         const formattedValue = value.match(/.{1,4}/g)?.join(' ') || '';
         e.target.value = formattedValue;
     });
@@ -267,19 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
         e.target.value = value.substring(0, 3); // Limit to 3 digits
     });
-
-    // Coupon functionality (example implementation)
-    function verifyCoupon() {
-        const couponCode = document.getElementById('coupon-code').value;
-        const couponMessage = document.getElementById('coupon-message');
-
-        // Example validation logic (replace with real validation)
-        if (couponCode === 'DISCOUNT10') {
-            couponMessage.textContent = 'Coupon code applied!';
-        } else {
-            couponMessage.textContent = 'Invalid coupon code.';
-        }
-    }
 
     verifyCouponButton.addEventListener('click', verifyCoupon);
 });
